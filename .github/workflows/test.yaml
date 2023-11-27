@@ -70,7 +70,6 @@ jobs:
 
       - name: Make directory for results
         run: mkdir -p testResults
-        shell: bash
 
       - name: Run POSTMAN collection
         run: |

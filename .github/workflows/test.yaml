@@ -1,92 +1,88 @@
-# name: Run petstore collection tests
-
-# on:
-#   push:
-#     branches: ["main", "master"]
-
-# jobs:
-#   test-api:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v4
-
-#       - name: Install Node
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: latest
-
-#       - name: Install Newman
-#         run: |
-#           npm install -g newman
-#           npm install -g newman-reporter-htmlextra
-
-#       - name: Create Directory For Results
-#         run: |
-#           mkdir -p results
-
-#       - name: Run Collection
-#         continue-on-error: true
-#         run: |
-#           newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export results/htmlreport.html --reporter-htmlextra-darkTheme
-
-#       - name: Upload Artifact
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: report
-#           path: ./results
-#           retention-days: 30
-          
-#       - name: Deploy report to Github Pages
-#         if: always()
-#         uses: peaceiris/actions-gh-pages@v3
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           publish_branch: gh-pages
-#           publish_dir: ./results
-name: Petstore Collection Tests
+name: Run petstore collection tests
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main", "master"]
 
 jobs:
   test-api:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Install Node
         uses: actions/setup-node@v4
 
-      - name: Install newman
+      - name: Install Newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      - name: Make directory for results
-        run: mkdir -p testResults
-
-      - name: Run POSTMAN collection
+      - name: Create Directory For Results
         run: |
-          npx newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export testResults/index.html --reporter-htmlextra-darkTheme > testResults/runreport1.html
-        continue-on-error: true
+          mkdir -p results
 
-      - name: Output the run Details
-        uses: actions/upload-artifact@v2
+      - name: Run Collection
+        continue-on-error: true
+        run: |
+          newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export results/htmlreport.html --reporter-htmlextra-darkTheme
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: RunReports
-          path: testResults
-      
-      - name: Deploy to GitHub Pages
+          name: report
+          path: results
+          
+      - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./testResults
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
+          publish_dir: ./results
+# name: Petstore Collection Tests
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   test-api:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+
+#       - name: Install newman
+#         run: |
+#           npm install -g newman
+#           npm install -g newman-reporter-htmlextra
+
+#       - name: Make directory for results
+#         run: mkdir -p testResults
+
+#       - name: Run POSTMAN collection
+#         run: |
+#           npx newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export testResults/index.html --reporter-htmlextra-darkTheme > testResults/runreport1.html
+#         continue-on-error: true
+
+#       - name: Output the run Details
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: RunReports
+#           path: testResults
+      
+#       - name: Deploy to GitHub Pages
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           personal_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./testResults
+#           publish_branch: gh-pages
 
 

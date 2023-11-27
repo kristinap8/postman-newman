@@ -35,12 +35,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: report
-          path: results
+          path: ./results/htmlreport.html
           retention-days: 30
 
       - name: Publish Report
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: results
+          publish_dir: ./results/
 

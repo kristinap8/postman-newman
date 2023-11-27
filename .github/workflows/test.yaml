@@ -1,0 +1,46 @@
+name: Run petstore collection tests
+
+on:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Create Directory For Results
+        run: |
+          mkdir -p results
+
+      - name: Run Collection
+        continue-on-error: true
+        run: |
+          newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export results/htmlreport.html --reporter-htmlextra-darkTheme
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: results
+          retention-days: 30
+
+      - name: Publish Report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: results
+

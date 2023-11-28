@@ -27,7 +27,7 @@ jobs:
       - name: Run Collection
         continue-on-error: true
         run: |
-          newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export results/htmlreport.html --reporter-htmlextra-darkTheme
+          newman run petstore.collection.json -r htmlextra --reporter-htmlextra-export results/index.html --reporter-htmlextra-darkTheme
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
